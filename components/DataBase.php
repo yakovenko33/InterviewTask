@@ -1,12 +1,13 @@
 <?php
 
+
 class DataBase
 {
-    public static function getPGO()
+    public static function getPDO()
     {
         $configDB = require_once(ROOT.'/config/configDataBase.php');
 
-        $dsn = $dsn = "mysql:host={$configDB['host']};dbname={$configDB['name']};charset={$configDB['charset']}";
+        $dsn = $dsn = "mysql:host={$configDB['host']};dbname={$configDB['db']};charset={$configDB['charset']}";
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

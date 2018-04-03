@@ -1,8 +1,7 @@
 <?php
-
-        array(
+ return array(
             'host' => '127.0.0.1',
-            'db'   => 'studyBase',
+            'db'   => 'interview',
             'user' => 'root',
             'pass' => '',
             'charset' => 'utf8'
