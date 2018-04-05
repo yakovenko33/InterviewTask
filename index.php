@@ -1,7 +1,7 @@
 <?php
 //FRONT CONTROLLER
 
-  //Options
+    //Options
     ini_set('diisplay_errors',1);
     error_reporting(E_ALL);
 
@@ -15,4 +15,3 @@
     //Call Rputer
     $router = new Router();
     $router->start();
-//    $router->run();

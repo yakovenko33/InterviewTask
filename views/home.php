@@ -13,7 +13,13 @@
 
 </nav>
 
-
+<div class="container-fluid">
+    <div class="container">
+        <div class="row-6 text-center">
+            <h4>Популярные статьи</h4>
+        </div>
+    </div>
+</div>
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -22,28 +28,34 @@
         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img class="d-block w-100" src="/web/img/slide-1.jpg" alt="First slide">
-            <p>Welcome0</p>
         </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="/web/img/slide-2.jpg" alt="Second slide">
-            <p>Welcome1</p>
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="/web/img/slide-3.jpg" alt="Third slide">
-            <p>Welcome2</p>
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="/web/img/slide-3.jpg" alt="Fourth slide">
-            <p>Welcome3</p>
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="/web/img/slide-3.jpg" alt="Fifth slide">
-            <p>Welcome4</p>
-        </div>
+        <?php foreach ($top as $row): ?>
+            <div class="carousel-item ">
+                <div class="container-fluid" >
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="col-md-6 offset-md-3">
+                                <div class="card">
+                                    <h5 class="card-header"><?php echo $row['name_user']; ?></h5>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $row['date']; ?></h5>
+                                        <p class="card-text"><?php print_r(substr($row['article'],0,100)) ; ?> </p>
+                                        <a href="article/<?php echo $row['id_article'];?>" class="btn btn-primary">Go somewhere</a>
+                                        <h5>Количество коментарий</h5>
+                                        <p class="card-text"><?php echo $row['rating']; ?> </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -64,7 +76,7 @@
                     <input type="text" class="form-control" id="inputAddress" name="author">
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Текс статьи</label>
+                    <label for="exampleFormControlTextarea1">Текст статьи</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
                 </div>
                 <button type="submit" name="ActionButton" class="btn btn-primary">Sign in</button>
@@ -78,14 +90,16 @@
         <div class="container-fluid" >
             <div class="container">
                 <div class="row text-center">
-                    <div class="card">
-                        <h5 class="card-header"><?php echo $row['name_user']; ?></h5>
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $row['date']; ?></h5>
-                            <p class="card-text"><?php print_r(substr($row['article'],0,100)) ; ?> </p>
-                            <a href="article/<?php echo $row['id_article'];?>" class="btn btn-primary">Go somewhere</a>
-                            <h5>Количество коментарий</h5>
-                            <p class="card-text"><?php echo $row['rating']; ?> </p>
+                    <div class="col-md-6 offset-md-3">
+                        <div class="card">
+                            <h5 class="card-header"><?php echo $row['name_user']; ?></h5>
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $row['date']; ?></h5>
+                                <p class="card-text"><?php print_r(substr($row['article'],0,100)) ; ?> </p>
+                                <a href="article/<?php echo $row['id_article'];?>" class="btn btn-primary">Go somewhere</a>
+                                <h5>Количество коментарий</h5>
+                                <p class="card-text"><?php echo $row['rating']; ?> </p>
+                            </div>
                         </div>
                     </div>
                 </div>

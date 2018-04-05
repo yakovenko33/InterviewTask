@@ -10,6 +10,9 @@ class Router
         $this->controllerName = 'DefaultController';
     }
 
+    /*
+     * Get URL and connect Controller and Action;
+     */
     public function start()
     {
         $this->url = explode( '/', $_SERVER['REQUEST_URI']);
@@ -36,23 +39,6 @@ class Router
             }
             $controllerObj->$actionName();
         }
-
-        /*foreach($this->route as $key => $value) {
-            if(preg_match("~$key~", $this->url)) {
-                $internalRoute = preg_replace("~$key~", $value, $this->url);
-                $temp = explode('/',$internalRoute);
-
-                $this->controllerName = array_shift($temp)."Controller";
-                $this->controllerName = ucfirst($this->controllerName);
-
-                $actionName = array_shift($temp)."Action";
-
-                $controller = $this->requireController($this->controllerName);
-
-                call_user_func_array(array($controller,$actionName),$temp);
-                break;
-            }
-        }*/
     }
 
     /*

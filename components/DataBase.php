@@ -1,10 +1,13 @@
 <?php
 
-
 class DataBase
 {
-
     public static function getPDO()
+
+        /*
+     * To plug configDataBase and create obj PDO;
+     * return obj;
+     */
     {
         $configDB = require_once(ROOT.'/config/configDataBase.php');
 

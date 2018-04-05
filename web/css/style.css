@@ -7,3 +7,8 @@ body{
     padding-bottom: 20px;
 }
 
+.carousel-control-prev-icon, .carousel-control-next-icon{
+    height: 50px;
+    width: 50px;
+    background-color: #357ebd;
+}

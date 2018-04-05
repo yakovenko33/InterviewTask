@@ -11,6 +11,10 @@ class ArticleModel
         $this->pdo = DataBase::getPDO();
     }
 
+    /*
+     * Getting Articles;
+     * return obj;
+     */
     public function getArticles()
     {
         $select = "SELECT users.name_user, article.id_article, article.article,  article.date, article.rating "
@@ -18,23 +22,15 @@ class ArticleModel
         $stmt = $this->pdo->prepare($select);
         $stmt->execute();
 
-//        foreach ($stmt as $row)
-//        {
-//            echo "{$row['name_user']}" . "</br>";
-//            echo "{$row['id_article']}" . "</br>";
-//            echo "{$row['article']}" . "</br>";
-//            echo "{$row['date']}" . "</br>";
-//        }
-//        exit;
         return $stmt;
     }
 
-    public function insertArticle($data)
+    /*
+     * Add new Articles;
+     *
+     */
+    public function addArticle($data)
     {
-//            $stmt = $this->pdo->prepare("INSERT INTO users (name_user) VALUES (:name_user)");
-//            $stmt->bindParam(':name_user', $data['author']);
-//
-//            $stmt->execute();
             $author = $this->setAuthor($data['author']);
 
             $stmt = $this->pdo->prepare("SELECT id_user  FROM users WHERE name_user = :name_user");
@@ -46,7 +42,8 @@ class ArticleModel
             $id_user = (int)$id_user;
 
             $date =  date("Y-m-d H:i:s");   //date("d.m.y");
-            $stmt = $this->pdo->prepare("INSERT INTO article (id_user, article, date) VALUES (:id_user, :article, :date)");
+            $stmt = $this->pdo->prepare("INSERT INTO article (id_user, article, date) 
+            VALUES (:id_user, :article, :date)");
             $stmt->bindParam(':id_user',  $id_user);
             $stmt->bindParam(':article', $data['text']);
             $stmt->bindParam(':date', $date);
@@ -54,13 +51,12 @@ class ArticleModel
             $stmt->execute();
     }
 
+    /*
+     * Get Articles by $id;
+     * return obj;
+     */
     public function getArticle($id)
     {
-//        $select = "SELECT users.name_user, article.id_article, article.article,  article.date "
-//            ."FROM users INNER JOIN article ON users.id_user = article.id_user WHERE users.id_users = 1";
-//        SELECT users.name_user, article.id_article, article.article,  article.date FROM users INNER JOIN article
-//        ON users.id_user = article.id_user WHERE article.id_article = 2
-
         $stmt = $this->pdo->prepare("SELECT users.name_user, article.id_article, article.article,  article.date 
           FROM users INNER JOIN article ON users.id_user = article.id_user WHERE article.id_article = :id_article");
 
@@ -70,6 +66,10 @@ class ArticleModel
         return $stmt;
     }
 
+    /*
+     * Set Author;
+     * return string;
+     */
     private function setAuthor($author)
     {
         if($this->testAuthor($author)){
@@ -80,10 +80,14 @@ class ArticleModel
 
             $stmt->execute();
 
-            return $stmt;
+            return $author;
         }
     }
 
+    /*
+     * Checks Articles;
+     * return string;
+     */
     private function testAuthor($author)
     {
         $stmt = $this->pdo->prepare("SELECT name_user FROM users WHERE name_user = :name_user");
@@ -95,6 +99,10 @@ class ArticleModel
         return $name;
     }
 
+    /*
+     * Add Comment;
+     *
+     */
     public function setComment($data, $id_article)
     {
        $author = $this->setAuthor($data['name']);
@@ -117,6 +125,10 @@ class ArticleModel
         $this->setRating($id_article);
     }
 
+    /*
+     * Get Comment;
+     * return obj;
+     */
     public function getComment($id_article)
     {
         $stmt = $this->pdo->prepare("SELECT  users.name_user, comments.comment FROM comments 
@@ -126,16 +138,13 @@ class ArticleModel
         $stmt->bindValue(':id_article', $id_article);
         $stmt->execute();
 
-//        foreach ($stmt as $row)
-//        {
-//            echo "{$row['name_user']}" . "</br>";
-//            echo "{$row['comment']}" . "</br>";
-//        }
-//        exit;
-
         return $stmt;
     }
 
+    /*
+     * Create Rating;
+     *
+     */
     private function setRating($id_article)
     {
         $stmt = $this->pdo->prepare("SELECT id_comment FROM comments WHERE id_article = :id_article");
@@ -150,5 +159,19 @@ class ArticleModel
         $stmt->bindParam(':id_article',  $id_article);
 
         $stmt->execute();
+    }
+
+    /*
+     * Get top 5 Article;
+     * return obj;
+     */
+    public function getTopArticle()
+    {
+        $select = "SELECT users.name_user, article.id_article, article.article,  article.date, article.rating "
+            ."FROM users INNER JOIN article ON users.id_user = article.id_user ORDER BY article.rating DESC LIMIT 5";
+        $stmt = $this->pdo->prepare($select);
+        $stmt->execute();
+
+        return $stmt;
     }
 }
