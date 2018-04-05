@@ -3,6 +3,7 @@
 
 class DataBase
 {
+
     public static function getPDO()
     {
         $configDB = require_once(ROOT.'/config/configDataBase.php');

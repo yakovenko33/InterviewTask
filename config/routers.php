@@ -3,8 +3,8 @@
     function routersConfig()
     {
         return array(
+            '/article' => 'default/article',
             '/' => 'default/home',
-            '/article/([0-9]+)' => 'default/home/$1'
         );
     }
 

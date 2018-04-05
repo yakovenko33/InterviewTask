@@ -1,5 +1,7 @@
 <?php
 
+use Jenssegers\Blade\Blade;
+
 require_once(ROOT.'/models/ArticleModel.php');
 
 class DefaultController
@@ -7,19 +9,22 @@ class DefaultController
     public function homeAction()
     {
         $blog = new ArticleModel();
-        $blog->insertValues($_POST);
+        if(!empty($_POST)) {
+            $blog->insertArticle($_POST);
+        }
 
-        var_dump($_POST);
-        return require_once(ROOT.'/template/home.php');
+        $articles = $blog->getArticles();// вывод информации
+
+        return require_once(ROOT.'/views/home.php');
     }
 
-    public function formAction()
+    public function articleAction($id = null)
     {
+        if($id) {
+            $blog = new ArticleModel();
+            $article = $blog->getArticle($id);
+        }
 
-    }
-
-    public function articleAction($id)
-    {
-        print_r("Hello World");
+        return require_once(ROOT.'/views/article.php');
     }
 }

@@ -1,29 +1,48 @@
 <?php
 
+
+use Jenssegers\Blade\Blade;
+
 class Router
 {
     private $url;
-    private $route;
     private $controllerName;
 
     public function __construct()
     {
-        require_once(ROOT.'/config/routers.php');
-        $this->route = routersConfig();
-    }
-
-    private function getURL()
-    {
-        $this->url = trim($_SERVER['REQUEST_URI']);
-
-        return $this->url;
+        $this->controllerName = 'DefaultController';
     }
 
     public function start()
     {
-        $this->getURL();
+        $blade = new Jenssegers\Blade\Blade('views', 'cache');
 
-        foreach($this->route as $key => $value) {
+        $this->url = explode( '/', $_SERVER['REQUEST_URI']);
+
+        $controllerObj = $this->requireController($this->controllerName);
+        $actionName = 'home';
+
+        if(!empty($this->url[1])) {
+            $actionName = $this->url[1];
+        }
+
+        $actionName = $actionName .'Action';
+
+        if(!empty($this->url[2])) {
+            $value = (int)$this->url[2];
+        }
+
+        if(!method_exists($controllerObj,$actionName)) {
+            print_r("Error 404");
+            exit;
+        } else {
+            if(!empty($value)) {
+                $controllerObj->$actionName($value);
+            }
+            $controllerObj->$actionName();
+        }
+
+        /*foreach($this->route as $key => $value) {
             if(preg_match("~$key~", $this->url)) {
                 $internalRoute = preg_replace("~$key~", $value, $this->url);
                 $temp = explode('/',$internalRoute);
@@ -38,7 +57,7 @@ class Router
                 call_user_func_array(array($controller,$actionName),$temp);
                 break;
             }
-        }
+        }*/
     }
 
     /*

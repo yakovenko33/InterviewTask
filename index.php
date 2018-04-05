@@ -9,6 +9,8 @@
     define('ROOT', dirname(__FILE__));
    // ROOT =  W:\domains\botvot.loc
 
+    require_once __DIR__ . '/vendor/autoload.php';
+
     require_once(ROOT.'/components/Router.php');
     //require_once(ROOT.'/components/Db.php');
 

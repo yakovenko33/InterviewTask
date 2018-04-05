@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
 
-    <?php require_once(ROOT.'/template/header.php');?>
+    <?php require_once(ROOT.'/views/header.php');?>
 
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a href="#" class="navbar-brand">
+    <a href="/" class="navbar-brand">
         <img src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30", height="30" halt="logo"/>
         <span>Interview Task</span>
     </a>
@@ -64,33 +64,32 @@
                     <input type="text" class="form-control" id="inputAddress" name="author">
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Example textarea</label>
+                    <label for="exampleFormControlTextarea1">Текс статьи</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="inputAddress2">Дата</label>
-                    <input type="text" class="form-control" id="date" name="date">
-                </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="submit" name="ActionButton" class="btn btn-primary">Sign in</button>
             </form>
         </div>
     </div>
 </div>
 
-<div class="container-fluid" >
-    <div class="container">
-        <div class="row text-center">
-            <div class="card">
-                <h5 class="card-header">Featured</h5>
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+
+<?php foreach ($articles as $row): ?>
+        <div class="container-fluid" >
+            <div class="container">
+                <div class="row text-center">
+                    <div class="card">
+                        <h5 class="card-header"><?php echo $row['name_user']; ?></h5>
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $row['date']; ?></h5>
+                            <p class="card-text"><?php print_r(substr($row['article'],0,100)) ; ?> </p>
+                            <a href="article/<?php echo $row['id_article'];?>" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+<?php endforeach; ?>
 
 
 
