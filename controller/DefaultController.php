@@ -1,7 +1,5 @@
 <?php
 
-use Jenssegers\Blade\Blade;
-
 require_once(ROOT.'/models/ArticleModel.php');
 
 class DefaultController
@@ -20,10 +18,15 @@ class DefaultController
 
     public function articleAction($id = null)
     {
-        if($id) {
+       if($id) {
             $blog = new ArticleModel();
             $article = $blog->getArticle($id);
-        }
+            if(!empty($_POST['name'])) {
+                $blog->setComment($_POST,$id);
+            }
+            $commets = $blog->getComment($id);
+//           $blog->setRating($id);
+       }
 
         return require_once(ROOT.'/views/article.php');
     }

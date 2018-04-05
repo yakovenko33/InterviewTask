@@ -1,8 +1,5 @@
 <?php
 
-
-use Jenssegers\Blade\Blade;
-
 class Router
 {
     private $url;
@@ -15,8 +12,6 @@ class Router
 
     public function start()
     {
-        $blade = new Jenssegers\Blade\Blade('views', 'cache');
-
         $this->url = explode( '/', $_SERVER['REQUEST_URI']);
 
         $controllerObj = $this->requireController($this->controllerName);

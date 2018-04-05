@@ -42,32 +42,33 @@
         </div>
     </div>
 
-
+    <?php foreach ($commets as $row): ?>
     <div class="container-fluid" >
         <div class="container">
             <div class="row text-center">
                 <div class="card">
-                    <h5 class="card-header">Featured</h5>
+                    <h5 class="card-header"><?php echo $row['name_user']; ?></h5>
                     <div class="card-body">
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <p class="card-text"><?php echo $row['comment']; ?></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <?php endforeach; ?>
 
 
     <div class="container-fluid">
         <div class="container">
             <div class="row-6 text-center">
-                <form  action="/" method="post">
+                <form  action="/article/<?php echo $id ?>" method="post">
                     <div class="form-group">
                         <label for="inputAddress">Имя автора</label>
-                        <input type="text" class="form-control" id="inputAddress" name="author">
+                        <input type="text" class="form-control" id="inputAddress" name="name">
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Коментарий</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Sign in</button>
                 </form>

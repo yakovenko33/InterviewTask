@@ -13,7 +13,7 @@ class ArticleModel
 
     public function getArticles()
     {
-        $select = "SELECT users.name_user, article.id_article, article.article,  article.date "
+        $select = "SELECT users.name_user, article.id_article, article.article,  article.date, article.rating "
         ."FROM users INNER JOIN article ON users.id_user = article.id_user ORDER BY article.date DESC";
         $stmt = $this->pdo->prepare($select);
         $stmt->execute();
@@ -31,21 +31,21 @@ class ArticleModel
 
     public function insertArticle($data)
     {
-            $date =  date("Y-m-d");   //date("d.m.y");
-
-            $stmt = $this->pdo->prepare("INSERT INTO users (name_user) VALUES (:name_user)");
-            $stmt->bindParam(':name_user', $data['author']);
-
-            $stmt->execute();
+//            $stmt = $this->pdo->prepare("INSERT INTO users (name_user) VALUES (:name_user)");
+//            $stmt->bindParam(':name_user', $data['author']);
+//
+//            $stmt->execute();
+            $author = $this->setAuthor($data['author']);
 
             $stmt = $this->pdo->prepare("SELECT id_user  FROM users WHERE name_user = :name_user");
-            $stmt->bindValue(':name_user',$data['author']);
+            $stmt->bindValue(':name_user', $author);
 
             $stmt->execute();
 
             $id_user = $stmt->fetchColumn();
             $id_user = (int)$id_user;
 
+            $date =  date("Y-m-d H:i:s");   //date("d.m.y");
             $stmt = $this->pdo->prepare("INSERT INTO article (id_user, article, date) VALUES (:id_user, :article, :date)");
             $stmt->bindParam(':id_user',  $id_user);
             $stmt->bindParam(':article', $data['text']);
@@ -72,10 +72,83 @@ class ArticleModel
 
     private function setAuthor($author)
     {
+        if($this->testAuthor($author)){
+            return $author;
+        } else {
+            $stmt = $this->pdo->prepare("INSERT INTO users (name_user) VALUES (:name_user)");
+            $stmt->bindParam(':name_user', $author);
+
+            $stmt->execute();
+
+            return $stmt;
+        }
+    }
+
+    private function testAuthor($author)
+    {
         $stmt = $this->pdo->prepare("SELECT name_user FROM users WHERE name_user = :name_user");
         $stmt->bindValue(':name_user',$author );
 
         $stmt->execute();
+        $name = $stmt->fetchColumn();
+
+        return $name;
+    }
+
+    public function setComment($data, $id_article)
+    {
+       $author = $this->setAuthor($data['name']);
+
+        $stmt = $this->pdo->prepare("SELECT id_user  FROM users WHERE name_user = :name_user");
+        $stmt->bindValue(':name_user', $author);
+
+        $stmt->execute();
+
+        $id_user = $stmt->fetchColumn();
+        $id_user = (int)$id_user;
+
+        $stmt = $this->pdo->prepare("INSERT INTO comments (id_article, id_user, comment)
+          VALUES (:id_article, :id_user, :comment)");
+        $stmt->bindParam(':id_article',  $id_article);
+        $stmt->bindParam(':id_user', $id_user);
+        $stmt->bindParam(':comment', $data['comment']);
+
+        $stmt->execute();
+        $this->setRating($id_article);
+    }
+
+    public function getComment($id_article)
+    {
+        $stmt = $this->pdo->prepare("SELECT  users.name_user, comments.comment FROM comments 
+            INNER JOIN users ON users.id_user = comments.id_user 
+            WHERE comments.id_article = :id_article ORDER BY comments.id_comment ASC");
+
+        $stmt->bindValue(':id_article', $id_article);
+        $stmt->execute();
+
+//        foreach ($stmt as $row)
+//        {
+//            echo "{$row['name_user']}" . "</br>";
+//            echo "{$row['comment']}" . "</br>";
+//        }
+//        exit;
+
         return $stmt;
+    }
+
+    private function setRating($id_article)
+    {
+        $stmt = $this->pdo->prepare("SELECT id_comment FROM comments WHERE id_article = :id_article");
+        $stmt->bindValue(':id_article', $id_article);
+
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        $count = (int)$count;
+
+        $stmt = $this->pdo->prepare("UPDATE article SET rating = :rating WHERE id_article = :id_article");
+        $stmt->bindParam(':rating',  $count);
+        $stmt->bindParam(':id_article',  $id_article);
+
+        $stmt->execute();
     }
 }

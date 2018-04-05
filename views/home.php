@@ -84,6 +84,8 @@
                             <h5 class="card-title"><?php echo $row['date']; ?></h5>
                             <p class="card-text"><?php print_r(substr($row['article'],0,100)) ; ?> </p>
                             <a href="article/<?php echo $row['id_article'];?>" class="btn btn-primary">Go somewhere</a>
+                            <h5>Количество коментарий</h5>
+                            <p class="card-text"><?php echo $row['rating']; ?> </p>
                         </div>
                     </div>
                 </div>
