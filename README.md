@@ -17,7 +17,7 @@ The project consists of
 
  Install
 ---
-1) Download the installation file with the archive in the project folderж
+1) Download the installation file with the archive in the project folder;
 2) Create a database named "interview" in MySQL Workbench or PhpMyAdmin;
 3) Run your project;
 4) Enter the configuration parameters  for connecting to the database;
